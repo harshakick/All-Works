@@ -1,0 +1,28 @@
+---
+### provision AWS EC2 instance
+- hosts: localhost
+  connection: local
+  gather_facts: false
+  user: root
+  pre_tasks:
+    - include_vars: variables.yml
+  tasks:
+    - name: Stop sandbox instances
+  hosts: localhost
+  gather_facts: false
+  connection: local
+  vars:
+    instance_ids:
+      - 'i-xxxxxx'
+      - 'i-xxxxxx'
+      - 'i-xxxxxx'
+    region: us-east-1
+  tasks:
+    - name: Stop the sandbox instances
+      ec2:
+        instance_ids: '{{ instance_ids }}'
+        region: '{{ region }}'
+        state: stopped
+        wait: True
+        vpc_subnet_id: subnet-29e63245
+        assign_public_ip: yes
